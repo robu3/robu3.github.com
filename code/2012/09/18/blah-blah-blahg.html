@@ -1,0 +1,116 @@
+<html>
+	<head>
+		<link rel="stylesheet" language="text/css" href="/css/bootstrap.min.css" />
+		<link rel="stylesheet" language="text/css" href="/css/legwarmers.css" />
+		<link rel="stylesheet" language="text/css" href="/css/pygments.css" />
+	</head>
+	<body>
+		<div id="top_ribbon">
+			<h2 id="title"><a href="/">rob does...</a></h2>
+			<ul><li><a href="/categories/code" class="code">code</a></li><li><a href="/categories/art" class="art">art</a></li><li><a href="/categories/writing" class="writing">writing</a></li></ul>
+		</div>	
+		
+			<div id="side_ribbon" class="ribbon-code"></div>	
+		
+		<div id="content">
+			<div class="category-index">
+	<div class="post post-code">
+		<div class="title-bar">
+			<div class="post-ribbon"></div>
+			<h3 class="title">Blah Blah Blahg</h3>
+			<h3 class="date">2012-09-18</h3>
+			<div class="clear"></div>
+		</div>
+		<div class="post-body">I decided to finally start a blog, not because I like the sound of my own voice (does that expression even apply when referring to written words?), but because I want a place to record my progress on various projects and endeavors. Public exposure adds additional pressure to bring projects to completion, and bringing projects to completion is something I need to work on. Also, it would warm my heart to know that at least one other programmer learned something of use from my posts.
+
+Being a developer, it simply wasn't enough for me to setup a Tumblr account or use some other pre-packaged solution; of course, I had to go off and roll my own. After a little research, I decided to go with Jekyll for a couple of reasons:
+
+* It's file-based, meaning I can write posts anywhere on any machine
+* It's Ruby-based and I wanted to brush up on my Ruby skills
+* It's an established project with a wealth of resources available
+
+Ruhoh also looks like a promising project, but I wanted to start with the granddaddy of static blogging before moving onto the next generation :)
+
+Since I just purchased my first [MacBook Pro](http://www.apple.com/macbook-pro) (15" w/ Retina Display), I was starting from a completely blank slate. For any fellow Ruby novices out there, there are 3 steps to getting started working with a Ruby library on a virgin machine:
+
+1. Install [RVM](https://rvm.io) (RVM is a tool used to manage multiple Ruby environments; essential when working codebases that utilize different versions of Ruby or gems)
+2. Install RubyGems (Ruby package manager; not necessary for Ruby 1.9+, and for < 1.9, RVM takes care of it for you)
+3. Install the gem for the library you want to use 
+
+The steps basically end up looking like the following in your terminal:
+
+{% highlight bash %}
+curl -L https://get.rvm.io | bash -s stable --ruby
+rvm 1.9.3
+gem install jekyll
+{% endhighlight %}
+
+The first command installs RVM and the latest stable version of Ruby (which includes RubyGems), thus taking care of #1 and #2. The second tells RVM which version of Ruby to use; you can leave this out and it will use whichever version is set to default. The third command installs the gem for the library, in this case, Jekyll. Note that you may need to open a new terminal window after installing RVM to get the commands recognized.
+
+Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven't tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the [CategoryPageGenerator](https://github.com/mojombo/jekyll/wiki/Plugins). Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:
+
+{% highlight ruby %}
+task :default => "blahg:build_and_run"
+
+namespace :blahg do
+	desc "Compile Sass into CSS"
+	task :compile_sass do
+		fname = "legwarmers"
+		puts "Compliling Sass..."
+		sh "sass css/#{fname}.scss:css/#{fname}.css"
+	end
+
+	desc "Start Development Server"
+	task :start_server do
+		puts "Starting devel server..."
+		sh "jekyll --server"
+	end
+
+	desc "Pull in files from dropbox folder"
+	task :dropbox_pull do
+		puts "check dropbox for new posts"
+		
+		dir = Dir.new("/Users/rob/Dropbox/posts")
+		dir.each do |entry|
+			# check for files that look like posts
+			if entry =~ /(w|-)*\.(md|html)/	
+				posts_dir = Dir.new("_posts")
+				if posts_dir.entries.include?(entry)
+					# post already exists
+					fname = entry + "_conflict"
+
+					FileUtils.cp "#{dir.path}/#{entry}", "#{posts_dir.path}/#{fname}"
+					puts "Post conflict: #{entry}"
+					puts "Conflicted copy: #{fname}"
+				else
+					# copy
+					FileUtils.cp "#{dir.path}/#{entry}", posts_dir.path
+					puts "New post: #{entry}"
+				end
+
+				# remove the file
+				FileUtils.rm "#{dir.path}/#{entry}"
+			end
+		end
+	end
+
+	desc "Build and Run"
+	task :build_and_run do
+		Rake::Task["blahg:compile_sass"].invoke
+		Rake::Task["blahg:start_server"].invoke
+	end
+end
+{% endhighlight %}
+
+I have to admit, I totally undervalued Rake until I went to setup this blog, probably due to my ignorance; it makes building terminal tools a breeze. Until now, I've always just cobbled together various Ruby scripts to accomplish a task, and Rake provides a nice structure to organize that kind of scripting with.
+
+At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There's still a lot to learn but definitely *ruby_skill++*;
+</div>
+		<div class="permalink">Permalink: <a href="http://localhost:4000/code/2012/09/18/blah-blah-blahg.html">http://localhost:4000/code/2012/09/18/blah-blah-blahg.html</a></div>
+	</div>
+</div>
+
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,198 @@
+/* base colors */
+$green: #C7FF9A;
+$blue: #04FFFF;
+$pink: #FF55FF;
+$bg: #FFFFFF;
+
+a:hover {
+	text-decoration: underline;
+}
+
+#top_ribbon {
+	position: absolute;
+	top: 0px;
+	width: 100%;
+	background-color: #000000;	
+	color: #FFFFFF;
+	padding: 7px 0px;
+}
+
+#title {
+	margin-left: 60px;
+	display: inline;
+}
+
+#title a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+#top_ribbon ul {
+	display: inline;
+}
+
+#top_ribbon li {
+	display: inline;
+}
+
+#top_ribbon li+li {
+	margin-left: 10px;
+}
+
+#side_ribbon {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	min-width: 50px;
+	min-height: 100%;
+	opacity: .7;
+}
+
+
+#content {
+	padding: 0px 10px;
+	margin: 50px 50px;
+}
+
+.green {
+	background-color: $green;
+}
+
+.blue {
+	background-color: $blue;
+}
+
+.pink {
+	background-color: $pink;
+}
+
+.code {
+	color: $green;
+}
+
+.art {
+	color: $blue;
+}
+
+
+.writing {
+	color: $pink;
+}
+
+/* post categories */
+.post a {
+	background-color: #000000;
+	padding: 2px 4px;
+}
+
+.post-code a {
+	color: $green;
+}
+
+.post-art a {
+	color: $blue;
+}
+
+.post-writing a {
+	color: $pink;
+}
+
+.ribbon-code {
+	background-color: $green;
+}
+
+.ribbon-art {
+	background-color: $blue;
+}
+
+.ribbon-writing {
+	background-color: $pink;
+}
+
+$ribbon_width: 17px;
+
+.ribbon-stripe {
+	position: fixed;
+	top: 0px;
+	opacity: .7;
+
+	min-width: $ribbon_width;
+	width: $ribbon_width;
+	min-height: 100%;
+	float: left;
+}
+
+.ribbon-left {
+	left: 0px;
+}
+.ribbon-middle {
+	left: $ribbon_width;
+}
+.ribbon-right {
+	left: $ribbon_width * 2;
+}
+
+.post h2 {
+	display: inline;
+}
+
+.post .title {
+	float: left;
+	margin-left: .5em;
+	padding: 0em .5em;
+	background-color: $bg;
+}
+
+.post .date {
+	float: right;
+	padding: 0em 0em 0em.5em;
+	background-color: $bg;
+}
+
+.post + .post {
+	margin-top: 2em;
+}
+
+.clear {
+	clear: both;
+}
+
+$post_ribbon_size: .75em;
+
+.post-ribbon {
+	min-width: 100%;
+	min-height: $post-ribbon_size;
+	display: inline-block;
+	z-index: -1;
+	position: relative;
+	top: $post_ribbon_size * 2;
+}
+
+
+.post-code .post-ribbon {
+	background-color: $green;
+}
+
+.post-art .post-ribbon {
+	background-color: $blue;
+}
+
+.post-writing .post-ribbon {
+	background-color: $pink;
+}
+
+.category-index .post .post-ribbon {
+	background-color: #000000;
+}
+
+.permalink {
+	margin-top: 10px;
+}
+	
+
+/* code blocks / pre */
+pre {
+	margin: 0px;
+	display: block;
+	font-family: monospace;
+}

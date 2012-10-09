@@ -1,0 +1,54 @@
+/* 
+	CSS file especially arranged for Pygments. 
+	http://sweyla.com/themes/css/Sweyla916212.css
+*/
+
+.highlight {
+	background: #03000B;
+	color: #FFFFFF;
+	padding: 10px;
+	margin: 1em;
+}
+
+.highlight span.selection { color: #323232; }
+.highlight span.gp { color: #84FFE1; }
+.highlight span.vi { color: #84FFE1; }
+.highlight span.kn { color: #FF55FF; }
+.highlight span.cp { color: #B8FFE8; }
+.highlight span.caret { color: #FFFFFF; }
+.highlight span.no { color: #B8FFE8; }
+.highlight span.s2 { color: #58F9FF; }
+.highlight span.nb { color: #CDEBE5; }
+.highlight span.nc { color: #76FFFF; }
+.highlight span.nd { color: #B8FFE8; }
+.highlight span.s { color: #58F9FF; }
+.highlight span.nf { color: #B8FFE8; }
+.highlight span.nx { color: #B8FFE8; }
+.highlight span.kp { color: #FF55FF; }
+.highlight span.nt { color: #76FFFF; }
+.highlight span.s1 { color: #58F9FF; }
+.highlight span.bg { color: #03000B; }
+.highlight span.kt { color: #FF55FF; }
+.highlight span.support_function { color: #95D0B5; }
+.highlight span.ow { color: #3FFFFF; }
+.highlight span.mf { color: #04FFFF; }
+.highlight span.bp { color: #84FFE1; }
+.highlight span.fg { color: #FFFFFF; }
+.highlight span.c1 { color: #C7FF9A; }
+.highlight span.kc { color: #84FFE1; }
+.highlight span.c { color: #C7FF9A; }
+.highlight span.sx { color: #58F9FF; }
+.highlight span.kd { color: #FF55FF; }
+.highlight span.ss { color: #04FFFF; }
+.highlight span.sr { color: #58F9FF; }
+.highlight span.mo { color: #04FFFF; }
+.highlight span.mi { color: #04FFFF; }
+.highlight span.mh { color: #04FFFF; }
+.highlight span.o { color: #3FFFFF; }
+.highlight span.si { color: #00D3FF; }
+.highlight span.sh { color: #58F9FF; }
+.highlight span.na { color: #B8FFE8; }
+.highlight span.sc { color: #58F9FF; }
+.highlight span.k { color: #FF55FF; }
+.highlight span.se { color: #00D3FF; }
+.highlight span.sd { color: #52C4F5; }

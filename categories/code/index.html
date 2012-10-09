@@ -1,0 +1,120 @@
+<html>
+	<head>
+		<link rel="stylesheet" language="text/css" href="/css/bootstrap.min.css" />
+		<link rel="stylesheet" language="text/css" href="/css/legwarmers.css" />
+		<link rel="stylesheet" language="text/css" href="/css/pygments.css" />
+	</head>
+	<body>
+		<div id="top_ribbon">
+			<h2 id="title"><a href="/">rob does...</a></h2>
+			<ul><li><a href="/categories/code" class="code">code</a></li><li><a href="/categories/art" class="art">art</a></li><li><a href="/categories/writing" class="writing">writing</a></li></ul>
+		</div>	
+		
+			<div id="side_ribbon" class="ribbon-code"></div>	
+		
+		<div id="content">
+			<div class="category-index">
+	
+		<div class="post post-code">
+			<div class="title-bar">
+				<div class="post-ribbon"></div>
+				<h3 class="title">Blah Blah Blahg</h3><h3 class="date">2012-09-18</h3>
+				<div class="clear"></div>
+			</div>
+			<div class="post-body"><p>I decided to finally start a blog, not because I like the sound of my own voice (does that expression even apply when referring to written words?), but because I want a place to record my progress on various projects and endeavors. Public exposure adds additional pressure to bring projects to completion, and bringing projects to completion is something I need to work on. Also, it would warm my heart to know that at least one other programmer learned something of use from my posts.</p>
+
+<p>Being a developer, it simply wasn&#8217;t enough for me to setup a Tumblr account or use some other pre-packaged solution; of course, I had to go off and roll my own. After a little research, I decided to go with Jekyll for a couple of reasons:</p>
+
+<ul>
+<li>It&#8217;s file-based, meaning I can write posts anywhere on any machine</li>
+
+<li>It&#8217;s Ruby-based and I wanted to brush up on my Ruby skills</li>
+
+<li>It&#8217;s an established project with a wealth of resources available</li>
+</ul>
+
+<p>Ruhoh also looks like a promising project, but I wanted to start with the granddaddy of static blogging before moving onto the next generation :)</p>
+
+<p>Since I just purchased my first <a href='http://www.apple.com/macbook-pro'>MacBook Pro</a> (15&#8221; w/ Retina Display), I was starting from a completely blank slate. For any fellow Ruby novices out there, there are 3 steps to getting started working with a Ruby library on a virgin machine:</p>
+
+<ol>
+<li>Install <a href='https://rvm.io'>RVM</a> (RVM is a tool used to manage multiple Ruby environments; essential when working codebases that utilize different versions of Ruby or gems)</li>
+
+<li>Install RubyGems (Ruby package manager; not necessary for Ruby 1.9+, and for &lt; 1.9, RVM takes care of it for you)</li>
+
+<li>Install the gem for the library you want to use</li>
+</ol>
+
+<p>The steps basically end up looking like the following in your terminal:</p>
+<div class='highlight'><pre><code class='bash'>curl -L https://get.rvm.io | bash -s stable --ruby
+rvm 1.9.3
+gem install jekyll
+</code></pre>
+</div>
+<p>The first command installs RVM and the latest stable version of Ruby (which includes RubyGems), thus taking care of #1 and #2. The second tells RVM which version of Ruby to use; you can leave this out and it will use whichever version is set to default. The third command installs the gem for the library, in this case, Jekyll. Note that you may need to open a new terminal window after installing RVM to get the commands recognized.</p>
+
+<p>Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven&#8217;t tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the <a href='https://github.com/mojombo/jekyll/wiki/Plugins'>CategoryPageGenerator</a>. Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:</p>
+<div class='highlight'><pre><code class='ruby'><span class='n'>task</span> <span class='ss'>:default</span> <span class='o'>=&gt;</span> <span class='s2'>&quot;blahg:build_and_run&quot;</span>
+
+<span class='n'>namespace</span> <span class='ss'>:blahg</span> <span class='k'>do</span>
+	<span class='n'>desc</span> <span class='s2'>&quot;Compile Sass into CSS&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:compile_sass</span> <span class='k'>do</span>
+		<span class='n'>fname</span> <span class='o'>=</span> <span class='s2'>&quot;legwarmers&quot;</span>
+		<span class='nb'>puts</span> <span class='s2'>&quot;Compliling Sass...&quot;</span>
+		<span class='n'>sh</span> <span class='s2'>&quot;sass css/</span><span class='si'>#{</span><span class='n'>fname</span><span class='si'>}</span><span class='s2'>.scss:css/</span><span class='si'>#{</span><span class='n'>fname</span><span class='si'>}</span><span class='s2'>.css&quot;</span>
+	<span class='k'>end</span>
+
+	<span class='n'>desc</span> <span class='s2'>&quot;Start Development Server&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:start_server</span> <span class='k'>do</span>
+		<span class='nb'>puts</span> <span class='s2'>&quot;Starting devel server...&quot;</span>
+		<span class='n'>sh</span> <span class='s2'>&quot;jekyll --server&quot;</span>
+	<span class='k'>end</span>
+
+	<span class='n'>desc</span> <span class='s2'>&quot;Pull in files from dropbox folder&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:dropbox_pull</span> <span class='k'>do</span>
+		<span class='nb'>puts</span> <span class='s2'>&quot;check dropbox for new posts&quot;</span>
+		
+		<span class='n'>dir</span> <span class='o'>=</span> <span class='no'>Dir</span><span class='o'>.</span><span class='n'>new</span><span class='p'>(</span><span class='s2'>&quot;/Users/rob/Dropbox/posts&quot;</span><span class='p'>)</span>
+		<span class='n'>dir</span><span class='o'>.</span><span class='n'>each</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>entry</span><span class='o'>|</span>
+			<span class='c1'># check for files that look like posts</span>
+			<span class='k'>if</span> <span class='n'>entry</span> <span class='o'>=~</span> <span class='sr'>/(w|-)*\.(md|html)/</span>	
+				<span class='n'>posts_dir</span> <span class='o'>=</span> <span class='no'>Dir</span><span class='o'>.</span><span class='n'>new</span><span class='p'>(</span><span class='s2'>&quot;_posts&quot;</span><span class='p'>)</span>
+				<span class='k'>if</span> <span class='n'>posts_dir</span><span class='o'>.</span><span class='n'>entries</span><span class='o'>.</span><span class='n'>include?</span><span class='p'>(</span><span class='n'>entry</span><span class='p'>)</span>
+					<span class='c1'># post already exists</span>
+					<span class='n'>fname</span> <span class='o'>=</span> <span class='n'>entry</span> <span class='o'>+</span> <span class='s2'>&quot;_conflict&quot;</span>
+
+					<span class='no'>FileUtils</span><span class='o'>.</span><span class='n'>cp</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>dir</span><span class='o'>.</span><span class='n'>path</span><span class='si'>}</span><span class='s2'>/</span><span class='si'>#{</span><span class='n'>entry</span><span class='si'>}</span><span class='s2'>&quot;</span><span class='p'>,</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>posts_dir</span><span class='o'>.</span><span class='n'>path</span><span class='si'>}</span><span class='s2'>/</span><span class='si'>#{</span><span class='n'>fname</span><span class='si'>}</span><span class='s2'>&quot;</span>
+					<span class='nb'>puts</span> <span class='s2'>&quot;Post conflict: </span><span class='si'>#{</span><span class='n'>entry</span><span class='si'>}</span><span class='s2'>&quot;</span>
+					<span class='nb'>puts</span> <span class='s2'>&quot;Conflicted copy: </span><span class='si'>#{</span><span class='n'>fname</span><span class='si'>}</span><span class='s2'>&quot;</span>
+				<span class='k'>else</span>
+					<span class='c1'># copy</span>
+					<span class='no'>FileUtils</span><span class='o'>.</span><span class='n'>cp</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>dir</span><span class='o'>.</span><span class='n'>path</span><span class='si'>}</span><span class='s2'>/</span><span class='si'>#{</span><span class='n'>entry</span><span class='si'>}</span><span class='s2'>&quot;</span><span class='p'>,</span> <span class='n'>posts_dir</span><span class='o'>.</span><span class='n'>path</span>
+					<span class='nb'>puts</span> <span class='s2'>&quot;New post: </span><span class='si'>#{</span><span class='n'>entry</span><span class='si'>}</span><span class='s2'>&quot;</span>
+				<span class='k'>end</span>
+
+				<span class='c1'># remove the file</span>
+				<span class='no'>FileUtils</span><span class='o'>.</span><span class='n'>rm</span> <span class='s2'>&quot;</span><span class='si'>#{</span><span class='n'>dir</span><span class='o'>.</span><span class='n'>path</span><span class='si'>}</span><span class='s2'>/</span><span class='si'>#{</span><span class='n'>entry</span><span class='si'>}</span><span class='s2'>&quot;</span>
+			<span class='k'>end</span>
+		<span class='k'>end</span>
+	<span class='k'>end</span>
+
+	<span class='n'>desc</span> <span class='s2'>&quot;Build and Run&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:build_and_run</span> <span class='k'>do</span>
+		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:compile_sass&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
+		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:start_server&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
+	<span class='k'>end</span>
+<span class='k'>end</span>
+</code></pre>
+</div>
+<p>I have to admit, I totally undervalued Rake until I went to setup this blog, probably due to my ignorance; it makes building terminal tools a breeze. Until now, I&#8217;ve always just cobbled together various Ruby scripts to accomplish a task, and Rake provides a nice structure to organize that kind of scripting with.</p>
+
+<p>At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There&#8217;s still a lot to learn but definitely <em>ruby_skill++</em>;</p></div>
+			<div class="permalink">Permalink: <a href="http://localhost:4000/code/2012/09/18/blah-blah-blahg.html">http://localhost:4000/code/2012/09/18/blah-blah-blahg.html</a></div>
+		</div>
+	
+</div>
+
+		</div>
+	</body>
+</html>
+

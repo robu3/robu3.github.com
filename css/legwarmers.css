@@ -1,0 +1,148 @@
+/* base colors */
+a:hover {
+  text-decoration: underline; }
+
+#top_ribbon {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  background-color: #000000;
+  color: #FFFFFF;
+  padding: 7px 0px; }
+
+#title {
+  margin-left: 60px;
+  display: inline; }
+
+#title a {
+  text-decoration: none;
+  color: #FFFFFF; }
+
+#top_ribbon ul {
+  display: inline; }
+
+#top_ribbon li {
+  display: inline; }
+
+#top_ribbon li + li {
+  margin-left: 10px; }
+
+#side_ribbon {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  min-width: 50px;
+  min-height: 100%;
+  opacity: .7; }
+
+#content {
+  padding: 0px 10px;
+  margin: 50px 50px; }
+
+.green {
+  background-color: #c7ff9a; }
+
+.blue {
+  background-color: #04ffff; }
+
+.pink {
+  background-color: #ff55ff; }
+
+.code {
+  color: #c7ff9a; }
+
+.art {
+  color: #04ffff; }
+
+.writing {
+  color: #ff55ff; }
+
+/* post categories */
+.post a {
+  background-color: #000000;
+  padding: 2px 4px; }
+
+.post-code a {
+  color: #c7ff9a; }
+
+.post-art a {
+  color: #04ffff; }
+
+.post-writing a {
+  color: #ff55ff; }
+
+.ribbon-code {
+  background-color: #c7ff9a; }
+
+.ribbon-art {
+  background-color: #04ffff; }
+
+.ribbon-writing {
+  background-color: #ff55ff; }
+
+.ribbon-stripe {
+  position: fixed;
+  top: 0px;
+  opacity: .7;
+  min-width: 17px;
+  width: 17px;
+  min-height: 100%;
+  float: left; }
+
+.ribbon-left {
+  left: 0px; }
+
+.ribbon-middle {
+  left: 17px; }
+
+.ribbon-right {
+  left: 34px; }
+
+.post h2 {
+  display: inline; }
+
+.post .title {
+  float: left;
+  margin-left: .5em;
+  padding: 0em .5em;
+  background-color: white; }
+
+.post .date {
+  float: right;
+  padding: 0em 0em 0em.5em;
+  background-color: white; }
+
+.post + .post {
+  margin-top: 2em; }
+
+.clear {
+  clear: both; }
+
+.post-ribbon {
+  min-width: 100%;
+  min-height: 0.75em;
+  display: inline-block;
+  z-index: -1;
+  position: relative;
+  top: 1.5em; }
+
+.post-code .post-ribbon {
+  background-color: #c7ff9a; }
+
+.post-art .post-ribbon {
+  background-color: #04ffff; }
+
+.post-writing .post-ribbon {
+  background-color: #ff55ff; }
+
+.category-index .post .post-ribbon {
+  background-color: #000000; }
+
+.permalink {
+  margin-top: 10px; }
+
+/* code blocks / pre */
+pre {
+  margin: 0px;
+  display: block;
+  font-family: monospace; }
