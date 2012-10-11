@@ -26,20 +26,10 @@
 		</div>
 		<div class="post-body"><p>Let me preface this personal account by stating that everything included herein has been written down exactly as I remember it; I honestly cannot say how much of it is <em>real</em> and how much of it occurred only in my mind, as my mind has been through a lot as of late and is beginning show some cracks.</p>
 
-<p>I live in a smaller, but decent-size, rental house in the Richmond, Virginia area. Coming from Seattle, I was amazed at how much house you can get for money, compared to what you can get in Seattle.</p>
+<p>I live in a smaller, 1940s-era rental house in the Richmond, Virginia area. Coming from Seattle, I was amazed at how much house you can get for money, compared to what you can get in Seattle. The only real negative that I have noticed so far is the bugs: between mosquitoes, ticks, and (worst of all) cockroaches, Richmond is full of them. Rental houses seems to be a safehaven for roaches; everyone I have lived in since I moved here has been infested. This is the first time I have ever had to deal with pest issues, as Seattle seems to be much less buggier than the RVA. Unfortunately, the house I live in currently appears to be some sort of nexus of cockroach activity.</p>
 
-<ul>
-<li>intro</li>
-
-<li>house desc</li>
-
-<li>the <a href='http://en.wikipedia.org/wiki/Cockroach'>bug</a> killing</li>
-
-<li>the being</li>
-
-<li>outro</li>
-</ul></div>
-		<div class="permalink">Permalink: <a href="http://localhost:4000/writing/2012/09/19/the-roach.html">http://localhost:4000/writing/2012/09/19/the-roach.html</a></div>
+<p>Being a relatively DIY sort of fellow, I decided initially to attempt to resolve the cockroach problem on my own, purchasing eco-friendly and non-toxic bug spray (since I have two young boys) and bait traps from Home Depot. My efforts appeared to have little effect. The type of cockroach infesting my home is of the American variety, not the smaller German, and this line appears to be particularly resilient to common poisons.</p></div>
+		<div class="permalink">Permalink: <a href="http://robu3.github.com/writing/2012/09/19/the-roach.html">http://robu3.github.com/writing/2012/09/19/the-roach.html</a></div>
 	</div>
 
 	<div class="post post-code">
@@ -81,8 +71,10 @@ gem install jekyll
 </div>
 <p>The first command installs RVM and the latest stable version of Ruby (which includes RubyGems), thus taking care of #1 and #2. The second tells RVM which version of Ruby to use; you can leave this out and it will use whichever version is set to default. The third command installs the gem for the library, in this case, Jekyll. Note that you may need to open a new terminal window after installing RVM to get the commands recognized.</p>
 
-<p>Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven&#8217;t tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the <a href='https://github.com/mojombo/jekyll/wiki/Plugins'>CategoryPageGenerator</a>. Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:</p>
-<div class='highlight'><pre><code class='ruby'><span class='n'>task</span> <span class='ss'>:default</span> <span class='o'>=&gt;</span> <span class='s2'>&quot;blahg:build_and_run&quot;</span>
+<p>Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven&#8217;t tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the <a href='https://github.com/mojombo/jekyll/wiki/Plugins'>CategoryPageGenerator</a>. Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile compiles the Sass into CSS, sets the configuration file for test or production, and also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:</p>
+<div class='highlight'><pre><code class='ruby'><span class='nb'>require</span> <span class='s1'>&#39;yaml&#39;</span>
+
+<span class='n'>task</span> <span class='ss'>:default</span> <span class='o'>=&gt;</span> <span class='s2'>&quot;blahg:build_and_run&quot;</span>
 
 <span class='n'>namespace</span> <span class='ss'>:blahg</span> <span class='k'>do</span>
 	<span class='n'>desc</span> <span class='s2'>&quot;Compile Sass into CSS&quot;</span>
@@ -128,16 +120,46 @@ gem install jekyll
 
 	<span class='n'>desc</span> <span class='s2'>&quot;Build and Run&quot;</span>
 	<span class='n'>task</span> <span class='ss'>:build_and_run</span> <span class='k'>do</span>
+		<span class='c1'># make sure that we are set for test, compile sass, start local server</span>
+		<span class='c1'># set url for test</span>
+		<span class='n'>config</span> <span class='o'>=</span> <span class='no'>YAML</span><span class='o'>.</span><span class='n'>load_file</span><span class='p'>(</span><span class='s2'>&quot;_config.yml&quot;</span><span class='p'>)</span>	
+		<span class='n'>config</span><span class='o'>[</span><span class='s2'>&quot;url&quot;</span><span class='o'>]</span> <span class='o'>=</span> <span class='s2'>&quot;http://localhost:4000&quot;</span>
+
+		<span class='no'>File</span><span class='o'>.</span><span class='n'>open</span><span class='p'>(</span><span class='s2'>&quot;_config.yml&quot;</span><span class='p'>,</span> <span class='s2'>&quot;w&quot;</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>f</span><span class='o'>|</span>
+			<span class='n'>f</span><span class='o'>.</span><span class='n'>puts</span><span class='p'>(</span><span class='n'>config</span><span class='o'>.</span><span class='n'>to_yaml</span><span class='p'>)</span>
+		<span class='k'>end</span>
+
 		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:compile_sass&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
 		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:start_server&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
+	<span class='k'>end</span>
+
+	<span class='n'>desc</span> <span class='s2'>&quot;Build&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:build</span> <span class='k'>do</span>
+		<span class='c1'># compiles sass and generates the html pages</span>
+		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:compile_sass&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
+		<span class='n'>sh</span> <span class='s2'>&quot;jekyll&quot;</span>
+	<span class='k'>end</span>
+
+	<span class='n'>desc</span> <span class='s2'>&quot;Publish&quot;</span>
+	<span class='n'>task</span> <span class='ss'>:publish</span> <span class='k'>do</span>
+		<span class='c1'># set url for publishing</span>
+		<span class='n'>config</span> <span class='o'>=</span> <span class='no'>YAML</span><span class='o'>.</span><span class='n'>load_file</span><span class='p'>(</span><span class='s2'>&quot;_config.yml&quot;</span><span class='p'>)</span>	
+		<span class='n'>config</span><span class='o'>[</span><span class='s2'>&quot;url&quot;</span><span class='o'>]</span> <span class='o'>=</span> <span class='s2'>&quot;http://robu3.github.com&quot;</span>
+
+		<span class='no'>File</span><span class='o'>.</span><span class='n'>open</span><span class='p'>(</span><span class='s2'>&quot;_config.yml&quot;</span><span class='p'>,</span> <span class='s2'>&quot;w&quot;</span><span class='p'>)</span> <span class='k'>do</span> <span class='o'>|</span><span class='n'>f</span><span class='o'>|</span>
+			<span class='n'>f</span><span class='o'>.</span><span class='n'>puts</span><span class='p'>(</span><span class='n'>config</span><span class='o'>.</span><span class='n'>to_yaml</span><span class='p'>)</span>
+		<span class='k'>end</span>
+
+		<span class='c1'># now build</span>
+		<span class='no'>Rake</span><span class='o'>::</span><span class='no'>Task</span><span class='o'>[</span><span class='s2'>&quot;blahg:build&quot;</span><span class='o'>].</span><span class='n'>invoke</span>
 	<span class='k'>end</span>
 <span class='k'>end</span>
 </code></pre>
 </div>
 <p>I have to admit, I totally undervalued Rake until I went to setup this blog, probably due to my ignorance; it makes building terminal tools a breeze. Until now, I&#8217;ve always just cobbled together various Ruby scripts to accomplish a task, and Rake provides a nice structure to organize that kind of scripting with.</p>
 
-<p>At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There&#8217;s still a lot to learn but definitely <em>ruby_skill++</em>;</p></div>
-		<div class="permalink">Permalink: <a href="http://localhost:4000/code/2012/09/18/blah-blah-blahg.html">http://localhost:4000/code/2012/09/18/blah-blah-blahg.html</a></div>
+<p>At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There&#8217;s still a lot to learn, but definitely <em>ruby_skill++</em>;</p></div>
+		<div class="permalink">Permalink: <a href="http://robu3.github.com/code/2012/09/18/blah-blah-blahg.html">http://robu3.github.com/code/2012/09/18/blah-blah-blahg.html</a></div>
 	</div>
 
 

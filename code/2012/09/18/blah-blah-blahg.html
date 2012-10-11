@@ -47,9 +47,11 @@ gem install jekyll
 
 The first command installs RVM and the latest stable version of Ruby (which includes RubyGems), thus taking care of #1 and #2. The second tells RVM which version of Ruby to use; you can leave this out and it will use whichever version is set to default. The third command installs the gem for the library, in this case, Jekyll. Note that you may need to open a new terminal window after installing RVM to get the commands recognized.
 
-Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven't tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the [CategoryPageGenerator](https://github.com/mojombo/jekyll/wiki/Plugins). Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:
+Ok, now back to Jekyll. Overall, the setup has been pretty painless so far (granted, I haven't tried to do anything fancy yet). The only custom code that I had to add (not even write!) was for the category index pages, which was already provided by the Jekyll team in the form of the [CategoryPageGenerator](https://github.com/mojombo/jekyll/wiki/Plugins). Also, since I opted to use Sass instead of straight CSS, I added a small rakefile to streamline my local development process. The rakefile compiles the Sass into CSS, sets the configuration file for test or production, and also pulls in posts from my Dropbox folder, just in case I build up a queue in there. Below is my rakefile in its entirety:
 
 {% highlight ruby %}
+require 'yaml'
+
 task :default => "blahg:build_and_run"
 
 namespace :blahg do
@@ -96,17 +98,47 @@ namespace :blahg do
 
 	desc "Build and Run"
 	task :build_and_run do
+		# make sure that we are set for test, compile sass, start local server
+		# set url for test
+		config = YAML.load_file("_config.yml")	
+		config["url"] = "http://localhost:4000"
+
+		File.open("_config.yml", "w") do |f|
+			f.puts(config.to_yaml)
+		end
+
 		Rake::Task["blahg:compile_sass"].invoke
 		Rake::Task["blahg:start_server"].invoke
+	end
+
+	desc "Build"
+	task :build do
+		# compiles sass and generates the html pages
+		Rake::Task["blahg:compile_sass"].invoke
+		sh "jekyll"
+	end
+
+	desc "Publish"
+	task :publish do
+		# set url for publishing
+		config = YAML.load_file("_config.yml")	
+		config["url"] = "http://robu3.github.com"
+
+		File.open("_config.yml", "w") do |f|
+			f.puts(config.to_yaml)
+		end
+
+		# now build
+		Rake::Task["blahg:build"].invoke
 	end
 end
 {% endhighlight %}
 
 I have to admit, I totally undervalued Rake until I went to setup this blog, probably due to my ignorance; it makes building terminal tools a breeze. Until now, I've always just cobbled together various Ruby scripts to accomplish a task, and Rake provides a nice structure to organize that kind of scripting with.
 
-At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There's still a lot to learn but definitely *ruby_skill++*;
+At the end of the day, setting up this blog has been a valuable learning experience, and I highly recommend doing the same to anyone who wants learn a little Ruby. There's still a lot to learn, but definitely *ruby_skill++*;
 </div>
-		<div class="permalink">Permalink: <a href="http://localhost:4000/code/2012/09/18/blah-blah-blahg.html">http://localhost:4000/code/2012/09/18/blah-blah-blahg.html</a></div>
+		<div class="permalink">Permalink: <a href="http://robu3.github.com/code/2012/09/18/blah-blah-blahg.html">http://robu3.github.com/code/2012/09/18/blah-blah-blahg.html</a></div>
 	</div>
 </div>
 

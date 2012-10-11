@@ -1,3 +1,5 @@
+require 'yaml'
+
 task :default => "blahg:build_and_run"
 
 namespace :blahg do
@@ -44,7 +46,37 @@ namespace :blahg do
 
 	desc "Build and Run"
 	task :build_and_run do
+		# make sure that we are set for test, compile sass, start local server
+		# set url for test
+		config = YAML.load_file("_config.yml")	
+		config["url"] = "http://localhost:4000"
+
+		File.open("_config.yml", "w") do |f|
+			f.puts(config.to_yaml)
+		end
+
 		Rake::Task["blahg:compile_sass"].invoke
 		Rake::Task["blahg:start_server"].invoke
+	end
+
+	desc "Build"
+	task :build do
+		# compiles sass and generates the html pages
+		Rake::Task["blahg:compile_sass"].invoke
+		sh "jekyll"
+	end
+
+	desc "Publish"
+	task :publish do
+		# set url for publishing
+		config = YAML.load_file("_config.yml")	
+		config["url"] = "http://robu3.github.com"
+
+		File.open("_config.yml", "w") do |f|
+			f.puts(config.to_yaml)
+		end
+
+		# now build
+		Rake::Task["blahg:build"].invoke
 	end
 end
